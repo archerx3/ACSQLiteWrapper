@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+func CreateSQLiteData(bytes: UnsafeRawPointer?, count: Int) -> Data? {
+    var data: Data? = nil
+    
+    if let dataBytes = bytes {
+        data = Data.init(bytes: dataBytes, count: count)
+    }
+    
+    return data
+}

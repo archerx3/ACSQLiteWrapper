@@ -449,16 +449,12 @@ extension ACSQLite {
 //                sqlite3_open_v2(string, &dbOpoint, 1, vfileSystem)
 //        }
 //        sqlite3_free(<#T##UnsafeMutableRawPointer!#>)
-//        sqlite3_busy_timeout
-//        sqlite3_busy_timeout(<#T##OpaquePointer!#>, <#T##ms: Int32##Int32#>)
-//        sqlite3_open_v2(<#T##filename: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##ppDb: UnsafeMutablePointer<OpaquePointer?>!##UnsafeMutablePointer<OpaquePointer?>!#>, <#T##flags: Int32##Int32#>, <#T##zVfs: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>)
-//        sqlite3_threadsafe()
-//        sqlite3_busy_timeout(<#T##OpaquePointer!#>, <#T##ms: Int32##Int32#>)
-//        sqlite3_create_function(<#T##db: OpaquePointer!##OpaquePointer!#>, <#T##zFunctionName: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##nArg: Int32##Int32#>, <#T##eTextRep: Int32##Int32#>, <#T##pApp: UnsafeMutableRawPointer!##UnsafeMutableRawPointer!#>, <#T##xFunc: ((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##(OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void#>, <#T##xStep: ((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##(OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void#>, <#T##xFinal: ((OpaquePointer?) -> Void)!##((OpaquePointer?) -> Void)!##(OpaquePointer?) -> Void#>)
-        
-//        sqlite3_create_function_v2(<#T##db: OpaquePointer!##OpaquePointer!#>, <#T##zFunctionName: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##nArg: Int32##Int32#>, <#T##eTextRep: Int32##Int32#>, <#T##pApp: UnsafeMutableRawPointer!##UnsafeMutableRawPointer!#>, <#T##xFunc: ((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##(OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void#>, <#T##xStep: ((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##((OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void)!##(OpaquePointer?, Int32, UnsafeMutablePointer<OpaquePointer?>?) -> Void#>, <#T##xFinal: ((OpaquePointer?) -> Void)!##((OpaquePointer?) -> Void)!##(OpaquePointer?) -> Void#>, <#T##xDestroy: ((UnsafeMutableRawPointer?) -> Void)!##((UnsafeMutableRawPointer?) -> Void)!##(UnsafeMutableRawPointer?) -> Void#>)
         
 //        memcpy(<#T##__dst: UnsafeMutableRawPointer!##UnsafeMutableRawPointer!#>, <#T##__src: UnsafeRawPointer!##UnsafeRawPointer!#>, <#T##__n: Int##Int#>)
+//        strcmp(<#T##__s1: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##__s2: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>)
+        
+//        malloc(<#T##__size: Int##Int#>) // UnsafeMutableRawPointer!
+//        free(<#T##UnsafeMutableRawPointer!#>)
         var string = "123"
         let point = withUnsafePointer(to: &string, {$0})
         

@@ -308,6 +308,7 @@ extension ACSQLiteStatement {
     }
 }
 
+// MARK: - Bind Values
 extension ACSQLiteStatement {
     func bind(data: Data?, at index: Int, copied: Bool) throws -> Bool {
         guard let sqlStmt = _sqlite3_stmt, let newData = data else {
@@ -636,5 +637,65 @@ extension ACSQLiteStatement {
         }
         
         return resultFlag
+    }
+}
+
+// MARK: -
+extension ACSQLiteStatement {
+    func data(at index: Int) throws -> Data? {
+        var data: Data? = nil
+        
+        guard let sqlite_stmt = sqlite3_stmt else {
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Get data failed, SQLite Statement is null.")
+            throw error
+        }
+        
+        if let numberOfBytes = sqlite3_column_blob(sqlite_stmt, Int32(index)) {
+            
+            let bytes = sqlite3_column_bytes(sqlite_stmt, Int32(index))
+            
+            data = CreateSQLiteData(bytes: numberOfBytes, count: Int(bytes))
+        } else {
+            if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "Get data failed.")
+                
+                throw error
+            }
+        }
+        
+        return data
+    }
+}
+
+// MARK: - Executing SQL Statement
+extension ACSQLiteStatement {
+    func executeNonQuery(bindValues: [String : Any]) throws -> Bool {
+        let bindResult = try self.bind(dictValue: bindValues, copied: false)
+        
+        if !bindResult {
+            return false
+        }
+        
+        let resultCodeOrExtendedResultCode = try self.step()
+        
+        let resultCode = ACSQLiteResultCode(resultCodeOrExtendedResultCode.rawValue & 0xFF)
+        
+        var success = true
+        
+        if resultCode != .ok && resultCode != .row && resultCode != .done {
+            success = false
+        }
+        
+        return success
+    }
+    
+    func executeScalar(bindValues: [String : Any]) throws {
+        
     }
 }
