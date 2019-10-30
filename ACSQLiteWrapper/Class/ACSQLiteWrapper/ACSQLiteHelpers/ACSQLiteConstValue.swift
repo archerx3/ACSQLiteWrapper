@@ -18,7 +18,7 @@ import CSQLite
 import SQLite3
 #endif
 
-/**
+ /**
  typedef NS_ENUM(int, ac_sqlite3_const_value_type)
  {
      ac_sqlite3_const_value_type_null = 0,
@@ -47,6 +47,34 @@ import SQLite3
  ac_sqlite3_const_value *ac_sqlite3_const_value__values = NULL;
  int                     ac_sqlite3_const_value__numberOfValues = 0;
  */
+
+enum ac_sqlite3_const_type: Int {
+    case null = 0
+    case blob
+    case double
+    case int
+    case int64
+    case text
+    case zeroblob
+}
+
+enum ac_sqlite3_const_values_type {
+    case pointer(UnsafeMutableRawPointer!)
+    case double(Double)
+    case int(Int)
+    case int64(Int64)
+}
+
+struct ac_sqlite3_const {
+    var name: String
+    var nameFree: UnsafeMutableRawPointer!
+    
+    var valueLength: Int
+    
+    var valueType: ac_sqlite3_const_type
+    var value: ac_sqlite3_const_values_type
+    var valueFree: UnsafeMutableRawPointer!
+}
 
  /**
  void ac_sqlite3_print_all_const_values()

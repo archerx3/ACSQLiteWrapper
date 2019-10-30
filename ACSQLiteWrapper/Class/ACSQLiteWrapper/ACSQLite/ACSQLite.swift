@@ -28,7 +28,7 @@ class ACSQLite {
      int32_t volatile  mMutextEnterCounter;
      */
     private var _sqlite3: sqlite3? = nil
-    private var sqlite3: sqlite3? {
+    private (set) var sqlite3: sqlite3? {
         set {
             if _sqlite3 != newValue {
                 _sqlite3 = newValue
@@ -448,7 +448,7 @@ extension ACSQLite {
 //                var vfileSystem: String? = nil
 //                sqlite3_open_v2(string, &dbOpoint, 1, vfileSystem)
 //        }
-        
+//        sqlite3_free(<#T##UnsafeMutableRawPointer!#>)
 //        sqlite3_busy_timeout
 //        sqlite3_busy_timeout(<#T##OpaquePointer!#>, <#T##ms: Int32##Int32#>)
 //        sqlite3_open_v2(<#T##filename: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##ppDb: UnsafeMutablePointer<OpaquePointer?>!##UnsafeMutablePointer<OpaquePointer?>!#>, <#T##flags: Int32##Int32#>, <#T##zVfs: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>)

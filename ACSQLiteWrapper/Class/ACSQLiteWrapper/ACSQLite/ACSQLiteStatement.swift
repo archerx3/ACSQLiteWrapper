@@ -166,9 +166,12 @@ extension ACSQLiteStatement {
         }
     }
     
-    func columnName(at index: Int, error: inout ACSQLiteError?) -> String? {
+    func columnName(at index: Int) throws -> String? {
         guard let sqlStmt = _sqlite3_stmt else {
-            return nil
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Can not finalize SQLite statement, sqlite statement is null.")
+            throw error
         }
         
         var columnName: String? = nil
@@ -176,9 +179,13 @@ extension ACSQLiteStatement {
         if let columnNamePointer = sqlite3_column_name(sqlStmt, Int32(index)) {
             columnName = String.init(cString: columnNamePointer)
         } else {
-            if error != nil {
-                let sqlite = sqlite3_db_handle(sqlStmt)
-                error = CreateACSQLiteError(sqlite)
+            if let sqlite = sqlite3_db_handle(sqlStmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "Can not finalize SQLite statement failed.")
+                throw error
             }
         }
         
@@ -199,68 +206,81 @@ extension ACSQLiteStatement {
         return columnName
     }
     
-    func step(error: inout ACSQLiteError?) -> ACSQLiteResultCode {
+    func step() throws -> ACSQLiteResultCode {
         var resultCode: ACSQLiteResultCode = .error
         
         guard let sqlStmt = _sqlite3_stmt else {
-            return resultCode
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "SQLite step error, sqlite statement is null.")
+            throw error
         }
         
         let result = sqlite3_step(sqlStmt)
         resultCode = ACSQLiteResultCode.init(result)
         
         if resultCode != .ok && resultCode != .row && resultCode != .done {
-            if error != nil {
-                let sqlite = sqlite3_db_handle(sqlStmt)
-                error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode)
+            if let sqlite = sqlite3_db_handle(sqlStmt), let error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "SQLite step error.")
+                throw error
             }
         }
         
         return resultCode
     }
     
-    func clearBinding(error: inout ACSQLiteError?) -> Bool {
+    func clearBinding() throws -> Void {
         guard let sqlStmt = _sqlite3_stmt else {
-            return false
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Clear Binding failed.")
+            throw error
         }
         
         let result = sqlite3_clear_bindings(sqlStmt)
         let resultCode = ACSQLiteResultCode.init(result)
         
         if resultCode != .ok {
-            if error != nil {
-                if let sqlite = sqlite3_db_handle(sqlStmt) {
-                    error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode)
-                }
+            if let sqlite = sqlite3_db_handle(sqlStmt), let error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "Clear Binding failed.")
+                throw error
             }
-            
-            return false
-        } else {
-            return true
         }
     }
     
-    func finalizeStatement(error: inout ACSQLiteError?) -> Bool {
-        var resultFlag = false
-        
+    func finalizeStatement() throws {
         guard let sqlStmt = _sqlite3_stmt else {
-            return resultFlag
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Can not finalize SQLite statement, sqlite statement is null.")
+            throw error
         }
         
         let result = sqlite3_finalize(sqlStmt)
         let resultCode = ACSQLiteResultCode.init(result)
         
-        resultFlag = true
-        
         if resultCode != .ok && resultCode != .row && resultCode != .done {
             let sqlite = sqlite3_db_handle(sqlStmt)
-            error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode)
+            if let error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "Finalize SQLite statement failed.")
+                throw error
+            }
         }
-        
-        return resultFlag
     }
     
-    func reset(error: inout ACSQLiteError?) -> Bool {
+    func reset() throws -> Bool {
         var resultFlag = false
         
         guard let sqlStmt = _sqlite3_stmt else {
@@ -274,7 +294,14 @@ extension ACSQLiteStatement {
         
         if resultCode != .ok && resultCode != .row && resultCode != .done {
             let sqlite = sqlite3_db_handle(sqlStmt)
-            error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode)
+            if let error = CreateACSQLiteError(sqlite, resultCodeOrExtendedResultCode: resultCode) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "Reset SQLite failed.")
+                throw error
+            }
         }
         
         return resultFlag
