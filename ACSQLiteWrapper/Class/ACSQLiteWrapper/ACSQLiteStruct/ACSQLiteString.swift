@@ -20,11 +20,11 @@ import SQLite3
 
 /**
 
- FOUNDATION_EXTERN void *RWSQLiteCStringCreateWithNSString(NSString *nsString);
+ FOUNDATION_EXTERN void *ACSQLiteCStringCreateWithNSString(NSString *nsString);
 
- FOUNDATION_EXTERN NSString *RWSQLiteNSStringCreateWithCString(const void *cString);
+ FOUNDATION_EXTERN NSString *ACSQLiteNSStringCreateWithCString(const void *cString);
 
- FOUNDATION_EXTERN NSMutableString *RWSQLiteNSMutableStringCreateWithCString(const void *cString);
+ FOUNDATION_EXTERN NSMutableString *ACSQLiteNSMutableStringCreateWithCString(const void *cString);
  */
 func testFunc() {
     // sqlite3_bind_text

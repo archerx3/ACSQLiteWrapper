@@ -11,6 +11,7 @@
 		AF29044C23558BB900E675BF /* ACSQLiteConstValueProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29044B23558BB900E675BF /* ACSQLiteConstValueProtocol.swift */; };
 		AF29044E2355D5B500E675BF /* ACSQLiteStatementProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29044D2355D5B500E675BF /* ACSQLiteStatementProcotol.swift */; };
 		AFCCB5452369371B0049FBCE /* ACSQLiteResultCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCCB5442369371B0049FBCE /* ACSQLiteResultCode.swift */; };
+		AFCCB548236954C10049FBCE /* ACSQLiteFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCCB547236954C10049FBCE /* ACSQLiteFunctions.swift */; };
 		AFE6B154235033BA009EFE3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6B152235033BA009EFE3D /* AppDelegate.swift */; };
 		AFE6B155235033BA009EFE3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6B153235033BA009EFE3D /* SceneDelegate.swift */; };
 		AFE6B15A235033D6009EFE3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFE6B156235033D6009EFE3D /* LaunchScreen.storyboard */; };
@@ -35,6 +36,7 @@
 		AF29044B23558BB900E675BF /* ACSQLiteConstValueProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACSQLiteConstValueProtocol.swift; sourceTree = "<group>"; };
 		AF29044D2355D5B500E675BF /* ACSQLiteStatementProcotol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACSQLiteStatementProcotol.swift; sourceTree = "<group>"; };
 		AFCCB5442369371B0049FBCE /* ACSQLiteResultCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACSQLiteResultCode.swift; sourceTree = "<group>"; };
+		AFCCB547236954C10049FBCE /* ACSQLiteFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ACSQLiteFunctions.swift; path = ACSQLiteWrapper/Class/ACSQLiteWrapper/ACSQLiteError/ACSQLiteFunctions.swift; sourceTree = SOURCE_ROOT; };
 		AFE6B136235032A2009EFE3D /* ACSQLiteWrapper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACSQLiteWrapper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFE6B152235033BA009EFE3D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AFE6B153235033BA009EFE3D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +76,14 @@
 				AF29044B23558BB900E675BF /* ACSQLiteConstValueProtocol.swift */,
 			);
 			path = ACSQLiteHelpers;
+			sourceTree = "<group>";
+		};
+		AFCCB546236954B00049FBCE /* ACSQLiteFunction */ = {
+			isa = PBXGroup;
+			children = (
+				AFCCB547236954C10049FBCE /* ACSQLiteFunctions.swift */,
+			);
+			path = ACSQLiteFunction;
 			sourceTree = "<group>";
 		};
 		AFE6B12D235032A2009EFE3D = {
@@ -155,6 +165,7 @@
 				AFE6B16C23503639009EFE3D /* ACSQLiteData */,
 				AFE6B16923503639009EFE3D /* ACSQLiteError */,
 				AFE6B16B23503639009EFE3D /* ACSQLiteFile */,
+				AFCCB546236954B00049FBCE /* ACSQLiteFunction */,
 				AF29044823557A4200E675BF /* ACSQLiteHelpers */,
 				AFE6B16623503639009EFE3D /* ACSQLiteLibrary */,
 				AFE6B16723503639009EFE3D /* ACSQLiteLimit */,
@@ -311,6 +322,7 @@
 				AFE6B170235036BD009EFE3D /* ACSQLiteString.swift in Sources */,
 				AFE6B17823503A53009EFE3D /* ACSQLiteFileOpenOperations.swift in Sources */,
 				AFE6B17623503A3B009EFE3D /* ACSQLiteLibrary.swift in Sources */,
+				AFCCB548236954C10049FBCE /* ACSQLiteFunctions.swift in Sources */,
 				AFE6B17223503A0B009EFE3D /* ACSQLiteLimit.swift in Sources */,
 				AFE6B154235033BA009EFE3D /* AppDelegate.swift in Sources */,
 				AF29044A23557A5F00E675BF /* ACSQLiteConstValue.swift in Sources */,

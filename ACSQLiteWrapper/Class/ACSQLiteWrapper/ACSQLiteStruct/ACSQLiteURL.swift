@@ -37,7 +37,7 @@ func ACSQLiteCStringCreate(with url: URL?) -> UnsafePointer<CChar>? {
 }
 
 /**
- char *RWSQLiteCStringCreateWithCFURL(CFURLRef cfUrlRef)
+ char *ACSQLiteCStringCreateWithCFURL(CFURLRef cfUrlRef)
  {
      char *cString = NULL;
      
@@ -80,18 +80,18 @@ func ACSQLiteCStringCreate(with url: URL?) -> UnsafePointer<CChar>? {
 */
 
 /**
- char *RWSQLiteCStringCreateWithNSURL(NSURL *nsUrl)
+ char *ACSQLiteCStringCreateWithNSURL(NSURL *nsUrl)
  {
-     char *cString = RWSQLiteCStringCreateWithCFURL((__bridge CFURLRef)nsUrl);
+     char *cString = ACSQLiteCStringCreateWithCFURL((__bridge CFURLRef)nsUrl);
      return cString;
  }
 */
 
 
 /**
- NSURL *RWSQLiteNSURLCreateWithCString(const char *cString)
+ NSURL *ACSQLiteNSURLCreateWithCString(const char *cString)
  {
-     NSURL *nsURL = (__bridge NSURL *)RWSQLiteCFURLCreateWithCString(cString);
+     NSURL *nsURL = (__bridge NSURL *)ACSQLiteCFURLCreateWithCString(cString);
      return nsURL;
  }
  */
@@ -104,7 +104,7 @@ func ACSQLiteURLCreate(with cString: UnsafePointer<UInt8>?) -> URL? {
 }
 
 /**
- CFURLRef RWSQLiteCFURLCreateWithCString(const char *cString)
+ CFURLRef ACSQLiteCFURLCreateWithCString(const char *cString)
  {
      CFURLRef cfUrlRef = nil;
      

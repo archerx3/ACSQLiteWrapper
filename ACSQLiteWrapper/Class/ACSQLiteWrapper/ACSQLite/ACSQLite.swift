@@ -438,6 +438,17 @@ extension ACSQLite {
 // Congifuring The SQLite Library
 extension ACSQLite {
     private func testAPI() {
+//        if let cstring = "sdfdf".cString(using: .utf8) {
+//                let cStrPoint = withUnsafePointer(to: cstring, { $0 })
+//        //        CFString()
+//
+//                let string = "path"
+//                let stringPoint = withUnsafePointer(to: string, { $0 })
+//                var dbOpoint: OpaquePointer? = nil
+//                var vfileSystem: String? = nil
+//                sqlite3_open_v2(string, &dbOpoint, 1, vfileSystem)
+//        }
+        
 //        sqlite3_busy_timeout
 //        sqlite3_busy_timeout(<#T##OpaquePointer!#>, <#T##ms: Int32##Int32#>)
 //        sqlite3_open_v2(<#T##filename: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>, <#T##ppDb: UnsafeMutablePointer<OpaquePointer?>!##UnsafeMutablePointer<OpaquePointer?>!#>, <#T##flags: Int32##Int32#>, <#T##zVfs: UnsafePointer<Int8>!##UnsafePointer<Int8>!#>)

@@ -13,6 +13,7 @@ protocol ACSQLitePointValueProtocol {
     var pointValue: UnsafePointer<PointType> { get }
 }
 
+// MARK: -
 extension String: ACSQLitePointValueProtocol {
     typealias PointType = String
     
