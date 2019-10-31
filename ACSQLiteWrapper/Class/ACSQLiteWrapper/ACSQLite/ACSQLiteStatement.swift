@@ -648,7 +648,7 @@ extension ACSQLiteStatement {
         guard let sqlite_stmt = sqlite3_stmt else {
             let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
                                      code: nil,
-                                     errorMessage: "Get data failed, SQLite Statement is null.")
+                                     errorMessage: "Get data value failed, SQLite Statement is null.")
             throw error
         }
         
@@ -660,16 +660,181 @@ extension ACSQLiteStatement {
         } else {
             if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
                 throw error
-            } else {
-                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
-                                         code: nil,
-                                         errorMessage: "Get data failed.")
-                
-                throw error
             }
         }
         
         return data
+    }
+    
+    func double(at index: Int) throws -> Double {
+        var doubleValue: Double = 0
+        
+        guard let sqlite_stmt = sqlite3_stmt else {
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Get double value failed, SQLite Statement is null.")
+            throw error
+        }
+        
+        doubleValue = sqlite3_column_double(sqlite_stmt, Int32(index))
+        
+        if doubleValue == 0 {
+            if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            }
+        }
+        
+        return doubleValue
+    }
+    
+    func int(at index: Int) throws -> Int {
+        var intValue: Int = 0
+        
+        intValue = 0
+        
+        guard let sqlite_stmt = sqlite3_stmt else {
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Get int value failed, SQLite Statement is null.")
+            throw error
+        }
+        
+        intValue = Int(sqlite3_column_int(sqlite_stmt, Int32(index)))
+        
+        if intValue == 0 {
+            if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            }
+        }
+        
+        
+        return intValue
+    }
+    
+    func int64(at index: Int) throws -> Int64 {
+        var int64Value: Int64 = 0
+        
+        guard let sqlite_stmt = sqlite3_stmt else {
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Get int64 value failed, SQLite Statement is null.")
+            throw error
+        }
+        
+        int64Value = sqlite3_column_int64(sqlite_stmt, Int32(index))
+        
+        if int64Value == 0 {
+            if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            }
+        }
+        
+        
+        return int64Value
+    }
+    
+    func string(at index: Int) throws -> String? {
+        var stringValue: String? = nil
+        
+        guard let sqlite_stmt = sqlite3_stmt else {
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Get string value failed, SQLite Statement is null.")
+            throw error
+        }
+        
+        if let stringPointer = sqlite3_column_text(sqlite_stmt, Int32(index)) {
+            stringValue = String(cString: stringPointer)
+        } else {
+            if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            }
+        }
+        
+        return stringValue
+    }
+    
+    func dataType(at index: Int) throws -> ACSQLiteDataType {
+        var dataType = ACSQLiteDataType.integer
+        
+        guard let sqlite_stmt = sqlite3_stmt else {
+            let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                     code: nil,
+                                     errorMessage: "Get data type failed, SQLite Statement is null.")
+            throw error
+        }
+        
+        let typeValue = sqlite3_column_type(sqlite_stmt, Int32(index))
+        
+        dataType = ACSQLiteDataType(typeValue)
+        
+        if !ACSQLiteDataTypeIsValid(dataType: dataType) {
+            if let sqlite = sqlite3_db_handle(sqlite_stmt), let error = CreateACSQLiteError(sqlite) {
+                throw error
+            } else {
+                let error = ACError.init(domain: ACError.sqliteCodeErrorDomain,
+                                         code: nil,
+                                         errorMessage: "Unvalid data type.")
+                throw error
+            }
+        }
+        
+        return dataType
+    }
+    
+    func object(at index: Int) throws -> Any? {
+        var obj: Any? = nil
+        
+        obj = nil
+        let dataType = try self.dataType(at: index)
+        
+        var error: ACError? = nil
+        
+        if ACSQLiteDataTypeIsValid(dataType: dataType) {
+            switch dataType {
+            case .integer:
+                obj = try self.int(at: index)
+            case .double:
+                obj = try self.double(at: index)
+            case .string:
+                obj = try self.string(at: index)
+            case .data:
+                obj = try self.data(at: index)
+            case .null:
+                obj = NSNull()
+            default:
+                error = ACError.init(domain: ACError.sqliteCodeErrorDomain, code: nil, errorMessage: "Unvalid data type.")
+            }
+        } else {
+            error = ACError.init(domain: ACError.sqliteCodeErrorDomain, code: nil, errorMessage: "Unvalid data type.")
+        }
+        
+        if let err = error {
+            throw err
+        }
+        
+        return obj
+    }
+    
+    func values() throws -> [String : Any] {
+        var values = [String : Any]()
+        
+        let numberOfColumns = self.columnCount()
+        
+        if numberOfColumns > 0 {
+            var index = 0
+            while index < numberOfColumns {
+                if let columnName = try self.columnName(at: index), let value = try self.object(at: index) {
+                    values.updateValue(value, forKey: columnName)
+                }
+                
+                index += 1
+            }
+        } else {
+            throw ACError.init(domain: nil, code: nil, errorMessage: nil)
+        }
+        
+        return values
     }
 }
 
